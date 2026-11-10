@@ -78,7 +78,9 @@ const route = useRoute('/registrations/[id]');
 const router = useRouter();
 
 const deleteError = ref<string | null>(null);
-const apiUrl = import.meta.env.VITE_API_URL.replace(/\/+$/, '');
+const apiUrl = (import.meta.env.VITE_API_URL || 'http://localhost:3001').replace(
+  /\/+$/, '',
+);
 const registrationUrl = computed(
   () => `${apiUrl}/carRegistrations/${encodeURIComponent(route.params.id)}`,
 );

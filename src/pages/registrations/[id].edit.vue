@@ -55,7 +55,9 @@ definePage({ name: 'registration-edit' });
 
 const route = useRoute('registration-edit');
 const router = useRouter();
-const apiUrl = import.meta.env.VITE_API_URL.replace(/\/+$/, '');
+const apiUrl = (import.meta.env.VITE_API_URL || 'http://localhost:3001').replace(
+  /\/+$/, '',
+);
 const registrationUrl = computed(
   () => `${apiUrl}/carRegistrations/${encodeURIComponent(route.params.id)}`,
 );

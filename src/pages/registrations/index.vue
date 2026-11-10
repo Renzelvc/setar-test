@@ -78,7 +78,9 @@ import type {
 const LOADING_SKELETON_COUNT = 3 as const;
 const router = useRouter();
 
-const apiUrl = import.meta.env.VITE_API_URL.replace(/\/+$/, '');
+const apiUrl = (import.meta.env.VITE_API_URL || 'http://localhost:3001').replace(
+  /\/+$/, '',
+);
 
 const {
   data: registrationData,
