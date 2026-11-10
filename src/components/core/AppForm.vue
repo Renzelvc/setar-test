@@ -1,5 +1,9 @@
 <template>
-  <div ref="formFields" class="grid gap-4 sm:grid-cols-2">
+  <div
+    ref="formFields"
+    class="grid gap-4 sm:grid-cols-2"
+    @focusout="validateFieldOnBlur"
+  >
     <div v-for="field in fields" :key="field.key">
       <FormLabel :for="`${formId}-${field.key}`" :label="field.label" />
       <FormInput
@@ -29,24 +33,28 @@ import type { FormField } from '@/types/form-field';
 
 const model = defineModel<Record<string, string>>({ required: true });
 const formFields = ref<HTMLDivElement | null>(null);
+const touchedFields = ref(new Set<string>());
 
 const props = withDefaults(
   defineProps<{
     fields: ReadonlyArray<FormField>;
-    showErrors?: boolean;
+    validateAllFields?: boolean;
   }>(),
   {
-    showErrors: false,
+    validateAllFields: false,
   },
 );
 
 const formId = useId();
+
 const errors = computed(() => {
   const fieldErrors: Record<string, string> = {};
-  if (!props.showErrors) return fieldErrors;
 
   for (const field of props.fields) {
+    if (!props.validateAllFields && !touchedFields.value.has(field.key))
+      continue;
     if (!field.schema) continue;
+
     const result = field.schema.safeParse(model.value[field.key]);
     if (!result.success) {
       const message = result.error.issues[0]?.message;
@@ -56,6 +64,16 @@ const errors = computed(() => {
 
   return fieldErrors;
 });
+
+function validateFieldOnBlur(event: FocusEvent) {
+  const target = event.target;
+  if (!(target instanceof HTMLInputElement)) return;
+
+  const field = props.fields.find((item) => item.key === target.name);
+  if (!field) return;
+
+  touchedFields.value = new Set(touchedFields.value).add(field.key);
+}
 
 function focusOnFirstError() {
   formFields.value

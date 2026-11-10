@@ -11,7 +11,7 @@
         ref="appForm"
         v-model="form"
         :fields="fields"
-        :show-errors="hasSubmitted"
+        :validate-all-fields="hasSubmitted"
       />
     </fieldset>
 
