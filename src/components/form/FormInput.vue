@@ -6,10 +6,10 @@
     :placeholder="placeholder"
     :required="required"
     :class="[
-      'w-full rounded-md border px-3 py-2 outline-none disabled:opacity-60',
+      'min-h-11 w-full rounded-lg border bg-paper/60 px-3.5 py-2.5 text-sm outline-none transition-colors placeholder:text-muted/70 focus:bg-white disabled:cursor-not-allowed disabled:opacity-60',
       danger
         ? 'border-red-600 focus:border-red-700 focus:ring-2 focus:ring-red-200'
-        : 'border-forest-300 focus:border-forest-700 focus:ring-2 focus:ring-forest-200',
+        : 'border-forest-200 hover:border-forest-300 focus:border-forest-700 focus:ring-2 focus:ring-forest-100',
     ]"
   />
 </template>

@@ -1,5 +1,5 @@
 <template>
-  <p v-if="message" :id="id" class="mt-1 text-sm text-red-700">
+  <p v-if="message" :id="id" class="mt-1.5 text-xs leading-relaxed text-red-700">
     {{ message }}
   </p>
 </template>

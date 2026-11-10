@@ -1,11 +1,11 @@
 <template>
   <div
     ref="formFields"
-    class="grid gap-4 sm:grid-cols-2"
+    class="grid gap-x-5 gap-y-5 sm:grid-cols-2"
     @focusout="validateFieldOnBlur"
   >
     <div v-for="field in fields" :key="field.key">
-      <FormLabel :for="`${formId}-${field.key}`" :label="field.label" />
+      <FormLabel :for="`${formId}-${field.key}`" :label="field.label" :required="field.required ?? true" />
       <FormInput
         v-if="field.type === 'input'"
         :model-value="model[field.key] ?? ''"

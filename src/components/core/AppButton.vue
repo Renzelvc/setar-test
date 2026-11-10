@@ -2,7 +2,7 @@
   <button
     :type="type"
     :disabled="disabled"
-    class="cursor-pointer rounded-md border px-3 py-2 text-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
+    class="inline-flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-lg border px-4 py-2.5 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
     :class="{
       'border-forest-300 bg-white text-ink enabled:hover:bg-forest-50':
         theme === 'default',

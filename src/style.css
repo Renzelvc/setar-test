@@ -15,8 +15,10 @@
   --color-forest-600: #438565;
   --color-forest-700: #2e7158;
   --color-forest-800: #285d48;
-  --color-muted: #78827e;
+  --color-muted: #68756e;
   --color-line: #e9eeeb;
+  --shadow-card: 0 8px 32px -16px rgb(32 43 40 / 0.12);
+  --shadow-floating: -12px 0 60px -20px rgb(32 43 40 / 0.2);
 }
 
 @layer base {
