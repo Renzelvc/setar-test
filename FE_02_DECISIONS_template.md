@@ -41,7 +41,7 @@
 
 - How I'd **swap the mock for a real API** (base URL, auth header, env config):
 
-* Design the mock to use realstic real API endpoints (GET/POST) from with /registrations endpoint. and when it comes to changing using the real API, change the Base API route to the API endppoint. ofcourse
+* Design the mock to use realstic real API endpoints (GET/POST) from with /registrations endpoint. and when it comes to changing using the real API, change the Base API route to the API endppoint. Things like error handling I would like to API to return field based error e.g. errors{buildYear: can not be in the future}, which a form component can easily be build around to extract and show the error.
 
 ## 3. Forms & validation
 
@@ -56,9 +56,11 @@
 - What I'd do **differently** if this were production:
 - The part of this app I'm **least confident about**:
 
-* Store, beautiful styling incl animation, responsiveness?
+* Store, beautiful styling, nicer loading states, responsiveness.
 * As for the data being added,edit and deleted a separate page isn't something that I would say is a must, I would rather do it in a sidebar/modal. Authentication and Authorization For production application actual guarding the pages would be a must.
-* Not that I am least confident off, but overal if time allowed, I would been able to implement it in a more of a "Production" version
+  implementing internationalisation (I81n) to allow multi-language. Adding a improved input component that accepts validation regex with use case of if it's a number input to disallow non numeric values to be entered with usage in the registration number (e.g. on any input to check wether it's allowed and only really update the modelValue if it's allowed). possibly adding caching
+
+* Not that I am least confident off, but overal if time allowed, I would been able to implement it in a more of a "Production" version rather than a quick and dirty but functional prototype / prove of concept.
 
 ## 5. AI usage
 
@@ -70,7 +72,8 @@
 
 * Prompting it for what I wanted to be implemented, from project setup, setting up auto routing, installing tailwind and choosing a simple fitting theme as well as creating the sidebar, and form etc.
 * Things like pages, forms etc was designed without components in mind. su same things like button was duplicated. these were small instructions that had to promp to change.
-  It also generated inputs with errors directly in the form template, if which I've asked to separate into more maintainable input and form field components.
+  It also generated inputs with errors directly in the form template, if which I've asked to separate into more maintainable input and form field components .
+  as well as slight adjustments to where the AI tries adding things like props that aren't in the correct place or even needed e.g. title prop for form component, I would prefer the form component to just take care of rendering the inputs and handling and showing of error and not title etc those could just be defined and added outside.
 
 ## 6. With more time, next I would…
 
