@@ -37,12 +37,13 @@
     </div>
 
     <ul v-else class="space-y-3">
-      <CarRegistrationListItem
-        v-for="registration in registrations"
-        :key="registration.id"
-        as="li"
-        :registration="registration"
-      />
+      <li v-for="registration in registrations" :key="registration.id">
+        <CarRegistrationListItem
+          as="RouterLink"
+          :registration="registration"
+          :to="{ name: '/registrations/[id]', params: { id: registration.id } }"
+        />
+      </li>
     </ul>
 
     <AppSidebar

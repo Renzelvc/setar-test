@@ -8,6 +8,5 @@
       <div class="h-3 w-52 max-w-full rounded bg-forest-100" />
       <div class="h-3 w-48 max-w-full rounded bg-forest-100" />
     </div>
-    <div class="h-9.5 w-12.5 shrink-0 rounded-md bg-forest-100" />
   </li>
 </template>

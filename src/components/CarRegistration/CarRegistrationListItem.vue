@@ -1,7 +1,8 @@
 <template>
   <component
     :is="as"
-    class="flex h-28 items-center justify-between gap-4 rounded-lg border border-line bg-white p-4"
+    :to="to"
+    class="flex h-28 items-center gap-4 rounded-lg border border-line bg-white p-4 transition-colors hover:bg-forest-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-forest-700"
   >
     <div class="min-w-0 flex-1">
       <h2 class="truncate font-semibold">
@@ -15,29 +16,16 @@
         Registered by {{ registration.registeredBy }}
       </p>
     </div>
-
-    <AppButton
-      :disabled="disabled"
-      :aria-label="`Edit ${registration.registrationNumber}`"
-      class="shrink-0"
-      @click="emit('edit', registration)"
-    >
-      Edit
-    </AppButton>
   </component>
 </template>
 
 <script setup lang="ts">
-import AppButton from '@/components/core/AppButton.vue';
 import type { CarRegistration } from '@/types/car-registration';
+import type { RouterLinkProps } from 'vue-router';
 
-const { as = 'div', disabled = false } = defineProps<{
-  as: 'div' | 'li';
+const { as = 'div' } = defineProps<{
+  as?: 'div' | 'li' | 'RouterLink';
   registration: CarRegistration;
-  disabled?: boolean;
-}>();
-
-const emit = defineEmits<{
-  edit: [registration: CarRegistration];
+  to?: RouterLinkProps['to'];
 }>();
 </script>
