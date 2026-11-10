@@ -41,6 +41,13 @@ yarn dev
 yarn build
 ```
 
+## Tailwind CSS and theme
+
+The app uses Tailwind CSS 4 through the Vite plugin. Shared design tokens are
+defined in `src/style.css` under `@theme`; use them in templates as utilities
+such as `bg-paper`, `text-ink`, `text-forest-700`, and `font-display`.
+Update those `--color-*` and `--font-*` values to theme the application.
+
 ## Car registration mock API
 
 Start the mock API in a separate terminal:
