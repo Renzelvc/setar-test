@@ -12,6 +12,7 @@
         @update:model-value="model[field.key] = $event"
         :id="`${formId}-${field.key}`"
         :name="field.key"
+        :placeholder="field.placeholder"
         :required="field.required ?? true"
         :danger="Boolean(errors[field.key])"
         v-bind="{

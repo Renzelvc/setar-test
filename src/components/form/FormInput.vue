@@ -3,6 +3,7 @@
     :id="id"
     v-model="model"
     :name="name"
+    :placeholder="placeholder"
     :required="required"
     :class="[
       'w-full rounded-md border px-3 py-2 outline-none disabled:opacity-60',
@@ -18,6 +19,7 @@ withDefaults(
   defineProps<{
     id: string;
     name: string;
+    placeholder?: string;
     required: boolean;
     danger?: boolean;
   }>(),
