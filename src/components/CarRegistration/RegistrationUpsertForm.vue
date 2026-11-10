@@ -1,6 +1,54 @@
+<template>
+  <form
+    ref="formElement"
+    :class="embedded ? undefined : 'rounded-xl border border-line bg-white p-6'"
+    novalidate
+    :aria-busy="isSubmitting"
+    @submit.prevent="submit"
+  >
+    <h2 v-if="!embedded" class="mb-5 font-display text-xl font-bold">
+      {{ registration ? 'Edit registration' : 'Create registration' }}
+    </h2>
+    <fieldset :disabled="isSubmitting" class="grid gap-4 sm:grid-cols-2">
+      <legend class="sr-only">
+        Registration details — all fields are required
+      </legend>
+      <FormField
+        v-for="field in fields"
+        :key="field.name"
+        :id="`${formId}-${field.name}`"
+        v-model="form[field.name]"
+        :name="field.name"
+        :label="field.label"
+        :error="errors[field.name]"
+        :inputmode="field.name === 'buildYear' ? 'numeric' : undefined"
+        required
+      />
+    </fieldset>
+    <p v-if="submitError" class="mt-4 text-sm text-red-700" role="alert">
+      {{ submitError }}
+    </p>
+    <div class="mt-6 flex gap-3">
+      <AppButton type="submit" theme="forest" :disabled="isSubmitting">
+        {{
+          isSubmitting
+            ? 'Saving…'
+            : registration
+              ? 'Save changes'
+              : 'Create registration'
+        }}
+      </AppButton>
+      <AppButton :disabled="isSubmitting" @click="emit('cancel')"
+        >Cancel</AppButton
+      >
+    </div>
+  </form>
+</template>
+
 <script setup lang="ts">
 import { computed, nextTick, reactive, ref, useId, watch } from 'vue';
 import AppButton from '@/components/core/AppButton.vue';
+import FormField from '@/components/core/FormField.vue';
 import {
   carRegistrationSchema,
   type CarRegistrationFormValues,
@@ -33,6 +81,7 @@ const emit = defineEmits<{
 const formId = useId();
 const formElement = ref<HTMLFormElement | null>(null);
 const hasSubmitted = ref(false);
+
 const form = reactive<CarRegistrationFormValues>({
   model: '',
   brand: '',
@@ -95,66 +144,3 @@ async function submit() {
   emit('submit', result.data);
 }
 </script>
-
-<template>
-  <form
-    ref="formElement"
-    :class="embedded ? undefined : 'rounded-xl border border-line bg-white p-6'"
-    novalidate
-    :aria-busy="isSubmitting"
-    @submit.prevent="submit"
-  >
-    <h2 v-if="!embedded" class="mb-5 font-display text-xl font-bold">
-      {{ registration ? 'Edit registration' : 'Create registration' }}
-    </h2>
-    <fieldset :disabled="isSubmitting" class="grid gap-4 sm:grid-cols-2">
-      <legend class="sr-only">
-        Registration details — all fields are required
-      </legend>
-      <div v-for="field in fields" :key="field.name">
-        <label
-          :for="`${formId}-${field.name}`"
-          class="mb-1 block text-sm font-medium"
-          >{{ field.label }}</label
-        >
-        <input
-          :id="`${formId}-${field.name}`"
-          v-model="form[field.name]"
-          :name="field.name"
-          type="text"
-          :inputmode="field.name === 'buildYear' ? 'numeric' : undefined"
-          required
-          :aria-invalid="Boolean(errors[field.name])"
-          :aria-describedby="
-            errors[field.name] ? `${formId}-${field.name}-error` : undefined
-          "
-          class="w-full rounded-md border border-forest-300 px-3 py-2 outline-none focus:border-forest-700 focus:ring-2 focus:ring-forest-200 aria-invalid:border-red-600 disabled:opacity-60"
-        />
-        <p
-          v-if="errors[field.name]"
-          :id="`${formId}-${field.name}-error`"
-          class="mt-1 text-sm text-red-700"
-        >
-          {{ errors[field.name] }}
-        </p>
-      </div>
-    </fieldset>
-    <p v-if="submitError" class="mt-4 text-sm text-red-700" role="alert">
-      {{ submitError }}
-    </p>
-    <div class="mt-6 flex gap-3">
-      <AppButton type="submit" theme="forest" :disabled="isSubmitting">
-        {{
-          isSubmitting
-            ? 'Saving…'
-            : registration
-              ? 'Save changes'
-              : 'Create registration'
-        }}
-      </AppButton>
-      <AppButton :disabled="isSubmitting" @click="emit('cancel')"
-        >Cancel</AppButton
-      >
-    </div>
-  </form>
-</template>
