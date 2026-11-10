@@ -16,7 +16,6 @@
     <section v-else-if="registration" class="rounded-lg border border-line bg-white p-6">
       <p class="mb-5 text-sm text-muted">Editing {{ registration.registrationNumber }}</p>
       <RegistrationUpsertForm
-        embedded
         :registration="registration"
         :is-submitting="isSaving"
         :submit-error="saveError"

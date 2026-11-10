@@ -52,7 +52,6 @@
       :close-disabled="isSaving"
     >
       <RegistrationUpsertForm
-        embedded
         :is-submitting="isSaving"
         :submit-error="saveError"
         @submit="createRegistration"
