@@ -48,6 +48,13 @@ defined in `src/style.css` under `@theme`; use them in templates as utilities
 such as `bg-paper`, `text-ink`, `text-forest-700`, and `font-display`.
 Update those `--color-*` and `--font-*` values to theme the application.
 
+## Fetching data
+
+`src/App.vue` uses [VueUse's `useFetch`](https://vueuse.org/core/useFetch/)
+with the API URL and `.get().json<CarRegistration[]>()`. It returns reactive
+`data`, `isFetching` (aliased to `isLoading`), and `error` state, plus an
+`execute` function for retries.
+
 ## Car registration mock API
 
 Start the mock API in a separate terminal:
