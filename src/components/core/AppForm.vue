@@ -14,7 +14,13 @@
         :name="field.key"
         :required="field.required ?? true"
         :danger="Boolean(errors[field.key])"
-        v-bind="field.attrs"
+        v-bind="{
+          ...field.attrs,
+          'aria-invalid': Boolean(errors[field.key]),
+          'aria-describedby': errors[field.key]
+            ? `${formId}-${field.key}-error`
+            : undefined,
+        }"
       />
       <FormError
         :id="`${formId}-${field.key}-error`"

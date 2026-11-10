@@ -4,7 +4,6 @@
     v-model="model"
     :name="name"
     :required="required"
-    :aria-invalid="danger ? 'true' : 'false'"
     :class="[
       'w-full rounded-md border px-3 py-2 outline-none disabled:opacity-60',
       danger
