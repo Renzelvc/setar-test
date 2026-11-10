@@ -1,15 +1,16 @@
 <template>
-  <div class="grid gap-4 sm:grid-cols-2">
+  <div ref="formFields" class="grid gap-4 sm:grid-cols-2">
     <div v-for="field in fields" :key="field.key">
       <FormLabel :for="`${formId}-${field.key}`" :label="field.label" />
       <FormInput
+        v-if="field.type === 'input'"
         :model-value="model[field.key] ?? ''"
         @update:model-value="model[field.key] = $event"
         :id="`${formId}-${field.key}`"
         :name="field.key"
         :required="field.required ?? true"
         :danger="Boolean(errors[field.key])"
-        v-bind="field.input?.attrs"
+        v-bind="field.attrs"
       />
       <FormError
         :id="`${formId}-${field.key}-error`"
@@ -20,25 +21,18 @@
 </template>
 
 <script setup lang="ts">
-import { computed, useId } from 'vue';
-import type { ZodType } from 'zod';
+import { computed, ref, useId } from 'vue';
 import FormError from '@/components/form/FormError.vue';
 import FormInput from '@/components/form/FormInput.vue';
 import FormLabel from '@/components/form/FormLabel.vue';
+import type { FormField } from '@/types/form-field';
 
 const model = defineModel<Record<string, string>>({ required: true });
+const formFields = ref<HTMLDivElement | null>(null);
 
 const props = withDefaults(
   defineProps<{
-    fields: ReadonlyArray<{
-      key: string;
-      label: string;
-      required?: boolean;
-      schema?: ZodType;
-      input?: {
-        attrs?: Record<string, unknown>;
-      };
-    }>;
+    fields: ReadonlyArray<FormField>;
     showErrors?: boolean;
   }>(),
   {
@@ -62,4 +56,12 @@ const errors = computed(() => {
 
   return fieldErrors;
 });
+
+function focusOnFirstError() {
+  formFields.value
+    ?.querySelector<HTMLElement>('[aria-invalid="true"]')
+    ?.focus();
+}
+
+defineExpose({ focusOnFirstError });
 </script>

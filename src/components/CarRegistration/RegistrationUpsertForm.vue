@@ -6,10 +6,13 @@
     @submit.prevent="submit"
   >
     <fieldset :disabled="isSubmitting">
-      <legend class="sr-only">
-        Registration details — all fields are required
-      </legend>
-      <AppForm v-model="form" :fields="fields" :show-errors="hasSubmitted" />
+      <legend class="sr-only">Registration details</legend>
+      <AppForm
+        ref="appForm"
+        v-model="form"
+        :fields="fields"
+        :show-errors="hasSubmitted"
+      />
     </fieldset>
 
     <p v-if="submitError" class="mt-4 text-sm text-red-700" role="alert">
@@ -25,9 +28,9 @@
               : 'Create registration'
         }}
       </AppButton>
-      <AppButton :disabled="isSubmitting" @click="emit('cancel')"
-        >Cancel</AppButton
-      >
+      <AppButton :disabled="isSubmitting" @click="emit('cancel')">
+        Cancel
+      </AppButton>
     </div>
   </form>
 </template>
@@ -40,11 +43,11 @@ import {
   carRegistrationSchema,
   type CarRegistrationFormValues,
 } from '@/schemas/car-registration';
-import type { ZodType } from 'zod';
 import type {
   CarRegistration,
   NewCarRegistration,
 } from '@/types/car-registration';
+import type { FormField } from '@/types/form-field';
 
 const props = withDefaults(
   defineProps<{
@@ -64,7 +67,7 @@ const emit = defineEmits<{
   cancel: [];
 }>();
 
-const formElement = ref<HTMLFormElement | null>(null);
+const appForm = ref<InstanceType<typeof AppForm> | null>(null);
 const hasSubmitted = ref(false);
 
 const form = reactive<CarRegistrationFormValues>({
@@ -76,43 +79,48 @@ const form = reactive<CarRegistrationFormValues>({
   registeredBy: '',
 });
 
-const fields: ReadonlyArray<{
-  key: keyof CarRegistrationFormValues;
-  label: string;
-  schema: ZodType;
-  input?: {
-    attrs?: Record<string, unknown>;
-  };
-}> = [
-  { key: 'model', label: 'Model', schema: carRegistrationSchema.shape.model },
-  { key: 'brand', label: 'Brand', schema: carRegistrationSchema.shape.brand },
+const fields: ReadonlyArray<FormField<keyof CarRegistrationFormValues>> = [
+  {
+    key: 'model',
+    label: 'Model',
+    type: 'input',
+    schema: carRegistrationSchema.shape.model,
+  },
+  {
+    key: 'brand',
+    label: 'Brand',
+    type: 'input',
+    schema: carRegistrationSchema.shape.brand,
+  },
   {
     key: 'type',
     label: 'Vehicle type',
     schema: carRegistrationSchema.shape.type,
+    type: 'input',
   },
   {
     key: 'buildYear',
     label: 'Build year',
     schema: carRegistrationSchema.shape.buildYear,
-    input: {
-      attrs: {
-        type: 'number',
-        inputmode: 'numeric',
-        min: 1,
-        max: new Date().getFullYear(),
-        step: 1,
-      },
+    type: 'input',
+    attrs: {
+      type: 'number',
+      inputmode: 'numeric',
+      min: 1,
+      max: new Date().getFullYear(),
+      step: 1,
     },
   },
   {
     key: 'registrationNumber',
     label: 'Registration number',
+    type: 'input',
     schema: carRegistrationSchema.shape.registrationNumber,
   },
   {
     key: 'registeredBy',
     label: 'Registered by',
+    type: 'input',
     schema: carRegistrationSchema.shape.registeredBy,
   },
 ];
@@ -125,19 +133,13 @@ async function submit() {
 
   if (!result.success) {
     await nextTick();
-    focusOnFirstInvalidField();
+    appForm.value?.focusOnFirstError();
 
     return;
   }
 
   emit('submit', result.data);
 }
-
-const focusOnFirstInvalidField = () => {
-  formElement.value
-    ?.querySelector<HTMLElement>('[aria-invalid="true"]')
-    ?.focus();
-};
 
 watch(
   () => props.registration,
