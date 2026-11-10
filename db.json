@@ -1,0 +1,31 @@
+{
+  "carRegistrations": [
+    {
+      "id": 1,
+      "model": "Corolla",
+      "brand": "Toyota",
+      "type": "Sedan",
+      "buildYear": 2022,
+      "registrationNumber": "ABC-1234",
+      "registeredBy": "Alex Morgan"
+    },
+    {
+      "id": 2,
+      "model": "Civic",
+      "brand": "Honda",
+      "type": "Hatchback",
+      "buildYear": 2021,
+      "registrationNumber": "XYZ-5678",
+      "registeredBy": "Jordan Lee"
+    },
+    {
+      "id": 3,
+      "model": "Model 3",
+      "brand": "Tesla",
+      "type": "Sedan",
+      "buildYear": 2024,
+      "registrationNumber": "EV-9012",
+      "registeredBy": "Taylor Kim"
+    }
+  ]
+}

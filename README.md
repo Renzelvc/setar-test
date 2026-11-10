@@ -1,6 +1,6 @@
 # setar-test
 
-This template should help get you started developing with Vue 3 in Vite.
+Vue 3 + Vite starter with a JSON-backed mock API for car registrations.
 
 ## Recommended IDE Setup
 
@@ -40,3 +40,32 @@ yarn dev
 ```sh
 yarn build
 ```
+
+## Car registration mock API
+
+Start the mock API in a separate terminal:
+
+```sh
+yarn mock:api
+```
+
+The API is available at `http://localhost:3001/carRegistrations`. JSON Server
+persists changes to `db.json` while it is running.
+
+| Method | Endpoint | Description |
+| --- | --- | --- |
+| GET | `/carRegistrations` | List registrations |
+| GET | `/carRegistrations/:id` | Get a registration |
+| POST | `/carRegistrations` | Create a registration |
+| PATCH | `/carRegistrations/:id` | Update a registration |
+| DELETE | `/carRegistrations/:id` | Delete a registration |
+
+Registration records contain `model`, `brand`, `type`, `buildYear`,
+`registrationNumber`, and `registeredBy`; the API assigns an `id`. The
+corresponding `CarRegistration`, `NewCarRegistration`, and
+`CarRegistrationUpdate` TypeScript types are in
+`src/types/car-registration.ts`. Typed fetch helpers are in
+`src/services/car-registrations.ts`.
+
+Vite loads `VITE_API_URL` from the project-root `.env` file. It defaults to
+`http://localhost:3001`; the value in `.env` is used as the API origin.
