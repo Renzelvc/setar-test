@@ -41,7 +41,7 @@
 
 - How I'd **swap the mock for a real API** (base URL, auth header, env config):
 
-* Design the mock to use realstic real API endpoints (GET/POST) from with /registrations endpoint. and when it comes to changing using the real API, change the Base API route to the API endppoint. Things like error handling I would like to API to return field based error e.g. errors{buildYear: can not be in the future}, which a form component can easily be build around to extract and show the error.
+* Design the mock to use realstic real API endpoints (GET/POST) from with /registrations endpoint. and when it comes to changing using the real API, change the Base API route to the API endppoint. Things like error handling I would like to API to return field based error e.g. errors{buildYear: can not be in the future}, which a form component can easily be build around to extract and show the error. of course, because keys env variables in vite can be exposed be careful not to include any private/sensitive keys in there!
 
 ## 3. Forms & validation
 
@@ -60,7 +60,7 @@
 * As for the data being added,edit and deleted a separate page isn't something that I would say is a must, I would rather do it in a sidebar/modal. Authentication and Authorization For production application actual guarding the pages would be a must.
   implementing internationalisation (I81n) to allow multi-language. Adding a improved input component that accepts validation regex with use case of if it's a number input to disallow non numeric values to be entered with usage in the registration number (e.g. on any input to check wether it's allowed and only really update the modelValue if it's allowed). possibly adding caching, Application can hold a lot of entries, BE pagination and searching would be ideal
 
-* Not that I am least confident off, but overal if time allowed, I would been able to implement it in a more of a "Production" version rather than a quick and dirty but functional prototype / prove of concept. Another point is that parts are AI generated and it most often generate too much or not exactly as I would (fast prototyping) and with limited time I wasn't / wouldn't be able to prefect it.
+* Not that I am least confident off, but overal if time allowed, I would been able to implement it in a more of a "Production" version rather than a quick and dirty but functional prototype / prove of concept. Another point is that parts are AI generated and it most often generate too much or not exactly as I would (fast prototyping) and with limited time I wasn't / wouldn't be able to analyse everything in details and fine tune it.
 
 ## 5. AI usage
 
