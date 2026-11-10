@@ -60,7 +60,7 @@
 * As for the data being added,edit and deleted a separate page isn't something that I would say is a must, I would rather do it in a sidebar/modal. Authentication and Authorization For production application actual guarding the pages would be a must.
   implementing internationalisation (I81n) to allow multi-language. Adding a improved input component that accepts validation regex with use case of if it's a number input to disallow non numeric values to be entered with usage in the registration number (e.g. on any input to check wether it's allowed and only really update the modelValue if it's allowed). possibly adding caching
 
-* Not that I am least confident off, but overal if time allowed, I would been able to implement it in a more of a "Production" version rather than a quick and dirty but functional prototype / prove of concept.
+* Not that I am least confident off, but overal if time allowed, I would been able to implement it in a more of a "Production" version rather than a quick and dirty but functional prototype / prove of concept. Another point is that when template or code is generated with AI it most often generate too much, one thing is i possibly haven't gone 100% go over the and fine tune everything
 
 ## 5. AI usage
 
