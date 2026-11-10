@@ -58,8 +58,8 @@ Registration records contain `model`, `brand`, `type`, `buildYear`,
 `registrationNumber`, and `registeredBy`; the API assigns an `id`. The
 corresponding `CarRegistration`, `NewCarRegistration`, and
 `CarRegistrationUpdate` TypeScript types are in
-`src/types/car-registration.ts`. Typed fetch helpers are in
-`src/services/car-registrations.ts`.
+`src/types/car-registration.ts`. All CRUD requests use VueUse's `useFetch`
+directly in the registration page components.
 
 Vite loads `VITE_API_URL` from the project-root `.env` file. It defaults to
 `http://localhost:3001`; the value in `.env` is used as the API origin.

@@ -12,7 +12,12 @@
         <AppButton
           theme="forest"
           :disabled="isDeleting"
-          @click="router.push({ name: 'registration-edit', params: { id: route.params.id } })"
+          @click="
+            router.push({
+              name: 'registration-edit',
+              params: { id: route.params.id },
+            })
+          "
         >
           Edit registration
         </AppButton>
@@ -67,12 +72,11 @@ import { computed, ref } from 'vue';
 import { RouterLink, useRoute, useRouter } from 'vue-router';
 import { useFetch } from '@vueuse/core';
 import AppButton from '@/components/core/AppButton.vue';
-import { deleteCarRegistration } from '@/services/car-registrations';
 import type { CarRegistration } from '@/types/car-registration';
 
 const route = useRoute('/registrations/[id]');
 const router = useRouter();
-const isDeleting = ref(false);
+
 const deleteError = ref<string | null>(null);
 const apiUrl = import.meta.env.VITE_API_URL.replace(/\/+$/, '');
 const registrationUrl = computed(
@@ -86,6 +90,11 @@ const {
   statusCode,
   execute: loadRegistration,
 } = useFetch(registrationUrl, { refetch: true }).get().json<CarRegistration>();
+
+const {
+  isFetching: isDeleting,
+  execute: executeDelete,
+} = useFetch(registrationUrl, { immediate: false }).delete();
 
 const vehicleName = computed(() => {
   const vehicle = registration.value;
@@ -106,16 +115,14 @@ async function deleteRegistration() {
   if (!currentRegistration || isDeleting.value) return;
 
   deleteError.value = null;
-  isDeleting.value = true;
 
   try {
-    await deleteCarRegistration(currentRegistration.id);
+    await executeDelete(true);
   } catch (cause) {
     deleteError.value =
       cause instanceof Error
         ? cause.message
         : 'Couldn’t delete the registration. Please try again.';
-    isDeleting.value = false;
     return;
   }
 

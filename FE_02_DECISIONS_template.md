@@ -33,7 +33,7 @@
 
 - How I **fetch data** and where that logic lives (component, composable/hook, service):
 
-* Directly within the page component and/or using service to do other CRUD operations.
+* All CRUD requests use VueUse's `useFetch` directly within the page components.
 
 - How I handle **loading / error / empty** states:
 
