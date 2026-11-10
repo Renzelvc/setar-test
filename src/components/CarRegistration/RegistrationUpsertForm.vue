@@ -1,30 +1,17 @@
 <template>
   <form
     ref="formElement"
-    :class="embedded ? undefined : 'rounded-xl border border-line bg-white p-6'"
     novalidate
     :aria-busy="isSubmitting"
     @submit.prevent="submit"
   >
-    <h2 v-if="!embedded" class="mb-5 font-display text-xl font-bold">
-      {{ registration ? 'Edit registration' : 'Create registration' }}
-    </h2>
-    <fieldset :disabled="isSubmitting" class="grid gap-4 sm:grid-cols-2">
+    <fieldset :disabled="isSubmitting">
       <legend class="sr-only">
         Registration details — all fields are required
       </legend>
-      <FormField
-        v-for="field in fields"
-        :key="field.name"
-        :id="`${formId}-${field.name}`"
-        v-model="form[field.name]"
-        :name="field.name"
-        :label="field.label"
-        :error="errors[field.name]"
-        :inputmode="field.name === 'buildYear' ? 'numeric' : undefined"
-        required
-      />
+      <AppForm v-model="form" :fields="fields" :show-errors="hasSubmitted" />
     </fieldset>
+
     <p v-if="submitError" class="mt-4 text-sm text-red-700" role="alert">
       {{ submitError }}
     </p>
@@ -46,13 +33,14 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, reactive, ref, useId, watch } from 'vue';
+import { nextTick, reactive, ref, watch } from 'vue';
 import AppButton from '@/components/core/AppButton.vue';
-import FormField from '@/components/core/FormField.vue';
+import AppForm from '@/components/core/AppForm.vue';
 import {
   carRegistrationSchema,
   type CarRegistrationFormValues,
 } from '@/schemas/car-registration';
+import type { ZodType } from 'zod';
 import type {
   CarRegistration,
   NewCarRegistration,
@@ -63,13 +51,11 @@ const props = withDefaults(
     registration?: CarRegistration | null;
     isSubmitting?: boolean;
     submitError?: string | null;
-    embedded?: boolean;
   }>(),
   {
     registration: null,
     isSubmitting: false,
     submitError: null,
-    embedded: false,
   },
 );
 
@@ -78,7 +64,6 @@ const emit = defineEmits<{
   cancel: [];
 }>();
 
-const formId = useId();
 const formElement = ref<HTMLFormElement | null>(null);
 const hasSubmitted = ref(false);
 
@@ -91,14 +76,68 @@ const form = reactive<CarRegistrationFormValues>({
   registeredBy: '',
 });
 
-const fields = [
-  { name: 'model', label: 'Model' },
-  { name: 'brand', label: 'Brand' },
-  { name: 'type', label: 'Vehicle type' },
-  { name: 'buildYear', label: 'Build year' },
-  { name: 'registrationNumber', label: 'Registration number' },
-  { name: 'registeredBy', label: 'Registered by' },
-] as const;
+const fields: ReadonlyArray<{
+  key: keyof CarRegistrationFormValues;
+  label: string;
+  schema: ZodType;
+  input?: {
+    attrs?: Record<string, unknown>;
+  };
+}> = [
+  { key: 'model', label: 'Model', schema: carRegistrationSchema.shape.model },
+  { key: 'brand', label: 'Brand', schema: carRegistrationSchema.shape.brand },
+  {
+    key: 'type',
+    label: 'Vehicle type',
+    schema: carRegistrationSchema.shape.type,
+  },
+  {
+    key: 'buildYear',
+    label: 'Build year',
+    schema: carRegistrationSchema.shape.buildYear,
+    input: {
+      attrs: {
+        type: 'number',
+        inputmode: 'numeric',
+        min: 1,
+        max: new Date().getFullYear(),
+        step: 1,
+      },
+    },
+  },
+  {
+    key: 'registrationNumber',
+    label: 'Registration number',
+    schema: carRegistrationSchema.shape.registrationNumber,
+  },
+  {
+    key: 'registeredBy',
+    label: 'Registered by',
+    schema: carRegistrationSchema.shape.registeredBy,
+  },
+];
+
+async function submit() {
+  if (props.isSubmitting) return;
+
+  hasSubmitted.value = true;
+  const result = carRegistrationSchema.safeParse(form);
+
+  if (!result.success) {
+    await nextTick();
+    focusOnFirstInvalidField();
+
+    return;
+  }
+
+  emit('submit', result.data);
+}
+
+const focusOnFirstInvalidField = () => {
+  formElement.value
+    ?.querySelector<HTMLElement>('[aria-invalid="true"]')
+    ?.focus();
+};
 
 watch(
   () => props.registration,
@@ -115,32 +154,4 @@ watch(
   },
   { immediate: true },
 );
-
-const errors = computed(() => {
-  const messages: Partial<Record<keyof CarRegistrationFormValues, string>> = {};
-  if (!hasSubmitted.value) return messages;
-
-  const result = carRegistrationSchema.safeParse(form);
-  if (!result.success) {
-    for (const issue of result.error.issues) {
-      const field = issue.path[0] as keyof CarRegistrationFormValues;
-      messages[field] ??= issue.message;
-    }
-  }
-  return messages;
-});
-
-async function submit() {
-  if (props.isSubmitting) return;
-  hasSubmitted.value = true;
-  const result = carRegistrationSchema.safeParse(form);
-  if (!result.success) {
-    await nextTick();
-    formElement.value
-      ?.querySelector<HTMLInputElement>('[aria-invalid="true"]')
-      ?.focus();
-    return;
-  }
-  emit('submit', result.data);
-}
 </script>
