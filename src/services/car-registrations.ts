@@ -19,14 +19,6 @@ async function request<T>(url: string, init?: RequestInit): Promise<T> {
   return response.json() as Promise<T>;
 }
 
-export function getCarRegistrations(): Promise<CarRegistration[]> {
-  return request<CarRegistration[]>(RESOURCE_URL);
-}
-
-export function getCarRegistration(id: number): Promise<CarRegistration> {
-  return request<CarRegistration>(`${RESOURCE_URL}/${id}`);
-}
-
 export function createCarRegistration(
   registration: NewCarRegistration,
 ): Promise<CarRegistration> {
