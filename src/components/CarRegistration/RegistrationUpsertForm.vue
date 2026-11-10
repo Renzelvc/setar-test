@@ -83,24 +83,28 @@ const fields: ReadonlyArray<FormField<keyof CarRegistrationFormValues>> = [
   {
     key: 'model',
     label: 'Model',
+    placeholder: 'Corolla',
     type: 'input',
     schema: carRegistrationSchema.shape.model,
   },
   {
     key: 'brand',
     label: 'Brand',
+    placeholder: 'Toyota',
     type: 'input',
     schema: carRegistrationSchema.shape.brand,
   },
   {
     key: 'type',
     label: 'Vehicle type',
+    placeholder: 'Sedan',
     schema: carRegistrationSchema.shape.type,
     type: 'input',
   },
   {
     key: 'buildYear',
     label: 'Build year',
+    placeholder: String(new Date().getFullYear()),
     schema: carRegistrationSchema.shape.buildYear,
     type: 'input',
     attrs: {
@@ -114,12 +118,14 @@ const fields: ReadonlyArray<FormField<keyof CarRegistrationFormValues>> = [
   {
     key: 'registrationNumber',
     label: 'Registration number',
+    placeholder: 'ABC-1234',
     type: 'input',
     schema: carRegistrationSchema.shape.registrationNumber,
   },
   {
     key: 'registeredBy',
     label: 'Registered by',
+    placeholder: 'Alex Morgan',
     type: 'input',
     schema: carRegistrationSchema.shape.registeredBy,
   },
