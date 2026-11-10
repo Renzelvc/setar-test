@@ -4,8 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "mock:api": "json-server --watch db.json --port 3001",
+    "dev": "run-p dev:vite mock:api",
+    "dev:vite": "vite",
+    "mock:api": "json-server --watch db.json --port 3001 --delay 1500",
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "build-only": "vite build",

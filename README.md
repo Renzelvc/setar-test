@@ -35,6 +35,10 @@ yarn
 yarn dev
 ```
 
+Starts Vite at `http://localhost:3000` and the mock API on port 3001 together.
+API responses have a 1,500 ms delay
+so the loading state is visible. Use `yarn dev:vite` to start only Vite.
+
 ### Type-Check, Compile and Minify for Production
 
 ```sh
@@ -57,7 +61,7 @@ with the API URL and `.get().json<CarRegistration[]>()`. It returns reactive
 
 ## Car registration mock API
 
-Start the mock API in a separate terminal:
+The mock API starts automatically with `yarn dev`. To run it on its own:
 
 ```sh
 yarn mock:api
