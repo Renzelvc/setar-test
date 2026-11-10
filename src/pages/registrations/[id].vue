@@ -6,7 +6,16 @@
     >
       ← Back to registrations
     </RouterLink>
-    <h1 class="font-display text-2xl font-bold">Registration details</h1>
+    <header class="flex items-center justify-between gap-4">
+      <h1 class="font-display text-2xl font-bold">Registration details</h1>
+      <AppButton
+        v-if="registration && !isLoading && !error"
+        theme="forest"
+        @click="router.push({ name: 'registration-edit', params: { id: route.params.id } })"
+      >
+        Edit registration
+      </AppButton>
+    </header>
 
     <p v-if="isLoading" role="status">Loading registration…</p>
 
@@ -41,12 +50,13 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { RouterLink, useRoute } from 'vue-router';
+import { RouterLink, useRoute, useRouter } from 'vue-router';
 import { useFetch } from '@vueuse/core';
 import AppButton from '@/components/core/AppButton.vue';
 import type { CarRegistration } from '@/types/car-registration';
 
 const route = useRoute('/registrations/[id]');
+const router = useRouter();
 const apiUrl = import.meta.env.VITE_API_URL.replace(/\/+$/, '');
 const registrationUrl = computed(
   () => `${apiUrl}/carRegistrations/${encodeURIComponent(route.params.id)}`,
